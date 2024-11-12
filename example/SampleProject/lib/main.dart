@@ -1,4 +1,3 @@
-
 import 'dart:core';
 import 'package:ant_media_flutter/ant_media_flutter.dart';
 import 'package:example/conference.dart';
@@ -12,9 +11,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:universal_io/io.dart';
 
 void main() => runApp(const MaterialApp(
-  home: MyApp(),
-  debugShowCheckedModeBanner: false,
-));
+      home: MyApp(),
+      debugShowCheckedModeBanner: false,
+    ));
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -29,17 +28,14 @@ enum DialogDemoAction {
 }
 
 class _MyAppState extends State<MyApp> {
-
   String setIP = '';
-  String _server = '';
+  String _server = 'wss://ant.pryde-tv.stream:4444/WebRTCAppEE/websocket';
   String _streamId = '';
-  String _roomId = '';
-
+  String _roomId = 'kIZhNkzUELqMjbHK58913009228067';
 
   final navigatorKey = GlobalKey<NavigatorState>();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey recordDialogKey = GlobalKey();
-
 
   @override
   initState() {
@@ -75,18 +71,20 @@ class _MyAppState extends State<MyApp> {
         children: [
           buildExampleItem(context, "Play", 0),
           customDivider(),
-          buildExampleItem(context,"Publish", 1),
+          buildExampleItem(context, "Publish", 1),
           customDivider(),
-          buildExampleItem(context,"Peer to Peer",  2),
+          buildExampleItem(context, "Peer to Peer", 2),
           customDivider(),
-          buildExampleItem(context,"Conference",  3),
+          buildExampleItem(context, "Conference", 3),
           customDivider(),
-          buildExampleItem(context,"Data Channel",  4),
+          buildExampleItem(context, "Data Channel", 4),
         ],
-      ),);
+      ),
+    );
   }
 
-  Widget buildExampleItem(BuildContext context, String text, int selectedOption) {
+  Widget buildExampleItem(
+      BuildContext context, String text, int selectedOption) {
     return GestureDetector(
       onTap: () {
         if (_server.isEmpty) {
@@ -106,14 +104,15 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  Future<void> _navigateToSelected(BuildContext context, int selectedOption) async {
+  Future<void> _navigateToSelected(
+      BuildContext context, int selectedOption) async {
     switch (selectedOption) {
-      case 0:// Play
-        await _showRoomIdDialog(context,0);
+      case 0: // Play
+        await _showRoomIdDialog(context, 0);
       case 1: // Publish
-        _showRoomIdDialog(context,1);
+        _showRoomIdDialog(context, 1);
       case 2: // Peer to Peer
-        await _showRoomIdDialog(context,2);
+        await _showRoomIdDialog(context, 2);
       case 3: // Conference
         await showStreamAndRoomIdDialog(context);
       case 4: // Data Channel
@@ -150,7 +149,6 @@ class _MyAppState extends State<MyApp> {
     );
     ScaffoldMessenger.of(context).showSnackBar(showToastServer);
   }
-
 
   void _showServerAddressDialog(BuildContext context) {
     var _controller = TextEditingController();
@@ -206,6 +204,8 @@ class _MyAppState extends State<MyApp> {
 
   Future<String?> _showRoomIdDialog(BuildContext context, int index) async {
     final TextEditingController roomIdController = TextEditingController();
+    roomIdController.text = _roomId;
+
     return showDialog<String>(
       context: context,
       builder: (BuildContext context) {
@@ -253,8 +253,8 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  void navigateToAppropriatePage(int index){
-    switch(index){
+  void navigateToAppropriatePage(int index) {
+    switch (index) {
       case 0:
         Navigator.push(
           context,
@@ -273,12 +273,11 @@ class _MyAppState extends State<MyApp> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (BuildContext context) =>
-                Peer(
-                  ip: setIP,
-                  id: _streamId,
-                  userscreen: false,
-                ),
+            builder: (BuildContext context) => Peer(
+              ip: setIP,
+              id: _streamId,
+              userscreen: false,
+            ),
           ),
         );
       case 3:
@@ -311,10 +310,10 @@ class _MyAppState extends State<MyApp> {
                           context,
                           MaterialPageRoute(
                               builder: (BuildContext context) => Publish(
-                                ip: _server,
-                                id: _roomId,
-                                userscreen: false,
-                              )));
+                                    ip: _server,
+                                    id: _roomId,
+                                    userscreen: false,
+                                  )));
                     }
                     // Navigator.of(context, rootNavigator: true).pop();
                   }),
@@ -325,17 +324,16 @@ class _MyAppState extends State<MyApp> {
                         context,
                         MaterialPageRoute(
                             builder: (BuildContext context) => Publish(
-                              ip: setIP,
-                              id: _streamId,
-                              userscreen: true,
-                            )));
-
+                                  ip: setIP,
+                                  id: _streamId,
+                                  userscreen: true,
+                                )));
                   })
             ]));
   }
 
-
-  Future<Map<String, String>?> showStreamAndRoomIdDialog(BuildContext context) async {
+  Future<Map<String, String>?> showStreamAndRoomIdDialog(
+      BuildContext context) async {
     final TextEditingController _streamIdController = TextEditingController();
     final TextEditingController _roomIdController = TextEditingController();
     return showDialog<Map<String, String>>(
@@ -349,7 +347,7 @@ class _MyAppState extends State<MyApp> {
               const Text('Enter stream ID'),
               TextField(
                 controller: _streamIdController,
-                onChanged: (String text){
+                onChanged: (String text) {
                   setState(() {
                     _streamId = text;
                   });
@@ -397,7 +395,7 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  Widget customDivider(){
+  Widget customDivider() {
     return const Divider(color: Colors.black, thickness: 1);
   }
 }
